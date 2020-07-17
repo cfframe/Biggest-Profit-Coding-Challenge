@@ -12,7 +12,7 @@ namespace DataExtraction
 
         public PricesDataFromSource(IRepository repository)
         {
-            this.Repository = repository;
+            this.Repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public string PricesStringFromSource(string dataSource)
