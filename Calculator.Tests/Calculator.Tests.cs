@@ -1,15 +1,11 @@
-using Calculator;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-namespace Tests
+namespace Calculator.Tests
 {
-    public class CalculatorTests
+    public class Tests
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             Calculator = new ProfitCalculator();
@@ -31,7 +27,7 @@ namespace Tests
 
             string actualResult = Calculator.CalculateBiggestProfitFromPriceData(priceData);
 
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -47,7 +43,7 @@ namespace Tests
             string expectedResult = @"No profit available";
             string actualResult = Calculator.CalculateBiggestProfitFromPriceData(testDataWithProfit);
 
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
     }
 }

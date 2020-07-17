@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Repository
+﻿namespace Repository
 {
     public class StringRepository : IRepository
     {
         public string GetPriceStringFromSource(string dataSource)
         {
-            if (dataSource.Length == 0)
-            {
-                return null;
-            }
+            // Dummy repository, for when text entered directly via application.
 
             return dataSource;
         }

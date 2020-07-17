@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Repository
+﻿namespace Repository
 {
-    interface IRepository
+    public interface IRepository
     {
         public string GetPriceStringFromSource(string dataSource);
     }

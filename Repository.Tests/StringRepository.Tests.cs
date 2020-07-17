@@ -4,7 +4,8 @@ namespace StringRepository.Tests
 {
     public class Tests
     {
-        [SetUp]
+        // Nothing to test - dummy repository
+        [OneTimeSetUp]
         public void Setup()
         {
             DataSource = new Repository.StringRepository();
@@ -12,22 +13,5 @@ namespace StringRepository.Tests
 
         private Repository.StringRepository DataSource;
 
-        [Test]
-        public void GetPriceStringFromSource_WhenStringIsEmpty_ReturnsNull()
-        {
-            string priceString = DataSource.GetPriceStringFromSource(string.Empty);
-
-            Assert.IsNull(priceString);
-        }
-
-        [Test]
-        public void GetPriceStringFromSource_WhenFileFound_ReturnsString()
-        {
-            string fullPath = @"..\..\..\..\SampleDataSets\ChallengeSampleDataSet1.txt";
-
-            string priceString = DataSource.GetPriceStringFromSource(fullPath);
-
-            Assert.IsNotNull(priceString);
-        }
     }
 }

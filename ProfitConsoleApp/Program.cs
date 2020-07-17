@@ -7,31 +7,48 @@ namespace ProfitConsoleApp
     {
         public static void Main(string[] args)
         {
-            try
+            bool keepOnTrying = true;
+
+            while (keepOnTrying)
             {
-                Console.WriteLine("Enter data line:");
+                try
+                {
+                    Console.WriteLine("Enter data text:");
 
-                string input = Console.ReadLine();
+                    string input = Console.ReadLine();
 
-                var extractor = new DataExtraction.DataFromString();
+                    var extractor = new DataExtraction.DataFromString();
 
-                var calculator = new Calculator.ProfitCalculator();
+                    var calculator = new Calculator.ProfitCalculator();
 
-                var priceData = extractor.GetPriceDataFromCsvString(input);
+                    var priceData = extractor.GetPriceDataFromCsvString(input);
 
-                var result = calculator.CalculateBiggestProfitFromPriceData(priceData);
+                    var result = calculator.CalculateBiggestProfitFromPriceData(priceData);
 
-                Console.WriteLine("Output below:");
-                Console.WriteLine(result);
-            } 
-            catch (Exception ex)
-            {
-                string message = string.Concat("Exception occurred with message: \n", ex.Message);
-                Console.WriteLine(message);
+                    Console.WriteLine("Output below:");
+                    Console.WriteLine(result);
+
+                }
+                catch (ApplicationException ex)
+                {
+                    Console.WriteLine("ERROR: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    string message = string.Concat("UNEXPECTED ERROR: \n", ex.Message);
+                    Console.WriteLine(message);
+                }
+
+                Console.WriteLine("Keep on trying? (Y to continue)");
+
+                var answer = Console.ReadKey(false);
+                keepOnTrying = (answer.Key == ConsoleKey.Y);
+                
+                Console.WriteLine("\n");
             }
 
-            Console.WriteLine("Press Return to end.");
-            Console.ReadLine();
+            Console.WriteLine("Press any key to end.");
+            Console.ReadKey(false);
             Environment.Exit(0);
 
         }

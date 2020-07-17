@@ -4,7 +4,7 @@ namespace FileRepository.Tests
 {
     public class Tests
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             DataSource = new Repository.FileRepository();
@@ -19,7 +19,7 @@ namespace FileRepository.Tests
 
             string priceString = DataSource.GetPriceStringFromSource(fullPath);
 
-            Assert.IsNull(priceString);
+            Assert.That(priceString, Is.Null); 
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace FileRepository.Tests
 
             string priceString = DataSource.GetPriceStringFromSource(fullPath);
 
-            Assert.IsNotNull(priceString);
+            Assert.That(priceString, Is.Not.Null);
         }
     }
 }
