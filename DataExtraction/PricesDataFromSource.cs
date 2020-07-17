@@ -6,18 +6,18 @@ using System.Text.RegularExpressions;
 
 namespace DataExtraction
 {
-    public class DataFromString
+    public class PricesDataFromSource
     {
-        public IRepository Repository;
+        private IRepository Repository;
 
-        //public DataFromString(IRepository repository)
-        //{
-        //    this.Repository = repository;
-        //}
-
-        public string CsvStringFromSource(string dataSource)
+        public PricesDataFromSource(IRepository repository)
         {
-            string rawData = Repository.GetPriceStringFromSource(dataSource);
+            this.Repository = repository;
+        }
+
+        public string PricesStringFromSource(string dataSource)
+        {
+            string rawData = Repository.GetPricesStringFromSource(dataSource);
 
             return rawData;
         }

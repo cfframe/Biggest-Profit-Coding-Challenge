@@ -17,7 +17,7 @@ namespace ProfitConsoleApp
 
                     string input = Console.ReadLine();
 
-                    var extractor = new DataExtraction.DataFromString();
+                    var extractor = new DataExtraction.PricesDataFromSource(new StringRepository());
 
                     var calculator = new Calculator.ProfitCalculator();
 

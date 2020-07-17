@@ -2,6 +2,6 @@
 {
     public interface IRepository
     {
-        public string GetPriceStringFromSource(string dataSource);
+        public string GetPricesStringFromSource(string dataSource);
     }
 }

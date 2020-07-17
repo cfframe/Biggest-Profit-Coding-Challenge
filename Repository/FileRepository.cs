@@ -5,7 +5,7 @@ namespace Repository
 {
     public class FileRepository : IRepository
     {
-        public string GetPriceStringFromSource(string fullPath)
+        public string GetPricesStringFromSource(string fullPath)
         {
 
             if (!File.Exists(fullPath))

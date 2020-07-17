@@ -17,7 +17,7 @@ namespace FileRepository.Tests
         {
             string fullPath = @"C:\alsdkfjalsjkdf.txt";
 
-            string priceString = DataSource.GetPriceStringFromSource(fullPath);
+            string priceString = DataSource.GetPricesStringFromSource(fullPath);
 
             Assert.That(priceString, Is.Null); 
         }
@@ -27,7 +27,7 @@ namespace FileRepository.Tests
         {
             string fullPath = @"..\..\..\..\SampleDataSets\ChallengeSampleDataSet1.txt";
 
-            string priceString = DataSource.GetPriceStringFromSource(fullPath);
+            string priceString = DataSource.GetPricesStringFromSource(fullPath);
 
             Assert.That(priceString, Is.Not.Null);
         }

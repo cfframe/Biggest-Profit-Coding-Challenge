@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,18 @@ namespace DataExtraction.Tests
         public void Setup()
         {
             // Should mock this.
-            Extractor = new DataFromString();
+            Extractor = new PricesDataFromSource(new StringRepository());
             SampleDataInput1 = "18.93,20.25,17.05,16.59,21.09,16.22,21.43,27.13,18.62,21.31,23.96,25.52,19.64,23.49,15.28,22.77,23.1,26.58,27.03,23.75,27.39,15.93,17.83,18.82,21.56,25.33,25,19.33,22.08,24.03";
         }
 
-        private DataFromString Extractor;
+        private PricesDataFromSource Extractor;
         private string SampleDataInput1;
 
         [Test]
         public void IsStringValidNumericCsv_WhenHasNonValidCharacter_ThrowsApplicationException()
         {
-            Assert.Throws<ApplicationException>(() => Extractor.IsStringValidNumericCsv("10.1,abc,30.02,10.1"));
-            Assert.Throws<ApplicationException>(() => Extractor.IsStringValidNumericCsv("10.1,_,30.02,10.1"));
+            Assert.That(() => Extractor.IsStringValidNumericCsv("10.1,abc,30.02,10.1"), Throws.TypeOf<ApplicationException>());
+            Assert.That(() => Extractor.IsStringValidNumericCsv("10.1,_,30.02,10.1"), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
@@ -47,19 +48,19 @@ namespace DataExtraction.Tests
         [Test]
         public void IsStringValidNumericCsv_WhenLength0_ThrowsApplicationException()
         {
-            Assert.Throws<ApplicationException>(() => Extractor.IsStringValidNumericCsv(""));
+            Assert.That(() => Extractor.IsStringValidNumericCsv(""), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
         public void GetPriceDataFromCsvString_WhenInvalidDataRetrieved_ThrowsApplicationException()
         {
-            Assert.Throws<ApplicationException>(() => Extractor.GetPriceDataFromCsvString("abc"));
+            Assert.That(() => Extractor.GetPriceDataFromCsvString("abc"), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
         public void GetPriceDataFromCsvString_WhenNoDataRetrieved_ThrowsApplicationException()
         {
-            Assert.Throws<ApplicationException>(() => Extractor.GetPriceDataFromCsvString(""));
+            Assert.That(() => Extractor.GetPriceDataFromCsvString(""), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
