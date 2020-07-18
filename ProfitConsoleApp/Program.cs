@@ -7,21 +7,43 @@ namespace ProfitConsoleApp
     {
         public static void Main(string[] args)
         {
-            bool keepOnTrying = true;
+            var dataSourceChoice = ProfitConsoleAppHelper.DataSourceChoice.Unassigned;
+            var helper = new ProfitConsoleAppHelper();
 
-            while (keepOnTrying)
+            string input = string.Empty;
+            IRepository repository = null;
+
+            while (dataSourceChoice != ProfitConsoleAppHelper.DataSourceChoice.Exit)
             {
+                dataSourceChoice = helper.DataSourceChoiceFromDisplayMenu();
+                
+                switch (dataSourceChoice)
+                {
+                    case ProfitConsoleAppHelper.DataSourceChoice.Exit:
+                        Environment.Exit(0);
+                        break;
+                    case ProfitConsoleAppHelper.DataSourceChoice.Text:
+                        Console.WriteLine("Enter raw data at line below and press Enter:");
+                        repository = new StringRepository();
+                        break;
+                    case ProfitConsoleAppHelper.DataSourceChoice.File:
+                        Console.WriteLine("Enter full file path and press Enter:");
+                        repository = new FileRepository();
+                        break;
+                    default:
+                        Environment.Exit(0);
+                        break;
+                }
+
                 try
                 {
-                    Console.WriteLine("Enter data text:");
+                    input = Console.ReadLine();
 
-                    string input = Console.ReadLine();
-
-                    var extractor = new DataExtraction.PricesDataFromSource(new StringRepository());
+                    var extractor = new DataExtraction.PricesDataFromSource(repository);
 
                     var calculator = new Calculator.ProfitCalculator();
 
-                    var priceData = extractor.GetPriceDataFromCsvString(input);
+                    var priceData = extractor.GetPriceDataFromDataSource(input);
 
                     var result = calculator.CalculateBiggestProfitFromPriceData(priceData);
 
@@ -39,17 +61,11 @@ namespace ProfitConsoleApp
                     Console.WriteLine(message);
                 }
 
-                Console.WriteLine("Keep on trying? (Y to continue)");
-
-                var answer = Console.ReadKey(false);
-                keepOnTrying = (answer.Key == ConsoleKey.Y);
-                
                 Console.WriteLine("\n");
             }
 
             Console.WriteLine("Press any key to end.");
             Console.ReadKey(false);
-            Environment.Exit(0);
 
         }
     }

@@ -15,6 +15,20 @@ namespace DataExtraction
             this.Repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        public Dictionary<int, double?> GetPriceDataFromDataSource(string dataSource)
+        {
+            string dataLine = Repository.GetPricesStringFromSource(dataSource);
+
+            Dictionary<int, double?> result = null;
+
+            if (IsStringValidNumericCsv(dataLine))
+            {
+                result = GetPriceDataFromCsvString(dataLine);
+            }
+
+            return result;
+        }
+
         public string PricesStringFromSource(string dataSource)
         {
             string rawData = Repository.GetPricesStringFromSource(dataSource);
@@ -28,20 +42,17 @@ namespace DataExtraction
 
             try
             {
-                if (IsStringValidNumericCsv(dataLine))
-                {
-                    string[] dataArray = dataLine.Split(",");
+                string[] dataArray = dataLine.Split(",");
 
-                    for (int i = 1; i <= dataArray.Count(); i++)
+                for (int i = 1; i <= dataArray.Count(); i++)
+                {
+                    try
                     {
-                        try
-                        {
-                            priceData.Add(i, double.Parse(dataArray[i - 1]));
-                        }
-                        catch
-                        {
-                            throw new ApplicationException(string.Concat("Invalid data '" + dataArray[i - 1] + "' found at listed number position ", i.ToString(), "."));
-                        }
+                        priceData.Add(i, double.Parse(dataArray[i - 1]));
+                    }
+                    catch
+                    {
+                        throw new ApplicationException(string.Concat("Invalid data '" + dataArray[i - 1] + "' found at listed number position ", i.ToString(), "."));
                     }
                 }
             }
@@ -64,16 +75,16 @@ namespace DataExtraction
             // TODO: to implement number comma pattern validation
             // Regex here seems to behave contrary to other regex conventions - doesn't accept \d or \.
 
-            if (itemToValidate.Length == 0)
+            if (string.IsNullOrEmpty(itemToValidate) || string.IsNullOrWhiteSpace(itemToValidate))
             {
-                throw new ApplicationException("No data in supplied text.");
+                throw new ApplicationException("No data supplied.");
             }
 
             // Look for unwanted characters
             Regex invalidCharacterRegex = new Regex("[^0-9.,]");
             if (invalidCharacterRegex.IsMatch(itemToValidate))
             {
-                throw new ApplicationException("Invalid data in supplied text.");
+                throw new ApplicationException("Data is invalid.");
             }
 
             // TODO: regex for CSV pattern.

@@ -7,6 +7,10 @@ namespace Repository
     {
         public string GetPricesStringFromSource(string fullPath)
         {
+            if (fullPath.StartsWith("\"") && fullPath.EndsWith("\""))
+            {
+                fullPath = fullPath.Replace("\"","");
+            }
 
             if (!File.Exists(fullPath))
             {

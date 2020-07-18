@@ -22,12 +22,11 @@ namespace FileRepository.Tests
             Assert.That(priceString, Is.Null); 
         }
 
-        [Test]
-        public void GetPriceStringFromSource_WhenFileFound_ReturnsString()
+        [TestCase(@"..\..\..\..\SampleDataSets\ChallengeSampleDataSet1.txt")]
+        [TestCase("\"..\\..\\..\\..\\SampleDataSets\\ChallengeSampleDataSet1.txt\"")]
+        public void GetPriceStringFromSource_WhenFileFound_ReturnsString(string stringToTest)
         {
-            string fullPath = @"..\..\..\..\SampleDataSets\ChallengeSampleDataSet1.txt";
-
-            string priceString = DataSource.GetPricesStringFromSource(fullPath);
+            string priceString = DataSource.GetPricesStringFromSource(stringToTest);
 
             Assert.That(priceString, Is.Not.Null);
         }
