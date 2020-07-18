@@ -43,42 +43,24 @@ namespace DataExtraction.Tests
             Assert.That(Extractor.IsStringValidNumericCsv(SampleDataInput1), Is.True);
         }
 
-        //[Test]
-        //public void IsStringValidNumericCsv_WhenValid_ReturnsTrue()
-        //{
-        //    Regex r = new Regex("^[[0-9]*.[0-9]{0-2},]*[0-9]*.[0-9]{0-2}$");
-        //    string itemToValidate = "10.1,20.2,30.02,10.1";
-
-        //    bool isMatch = r.IsMatch(itemToValidate);
-
-        //    Assert.That(isMatch, Is.True);
-        //}
-
-        [Test]
-        public void IsStringValidNumericCsv_WhenLength0_ThrowsApplicationException()
+        [TestCase("10.1,20.2,30.02,10.1")]
+        [TestCase("10.,20.2,30.02,10.1")]
+        [TestCase("10.6,.2,30.02,10.1")]
+        public void IsStringValidNumericCsv_WhenValid_ReturnsTrue(string stringToTest)
         {
-            Assert.That(() => Extractor.IsStringValidNumericCsv(""), Throws.TypeOf<ApplicationException>());
+
+            bool isMatch = Extractor.IsStringValidNumericCsv(stringToTest);
+
+            Assert.That(isMatch, Is.True);
         }
 
+        [TestCase("")]
+        [TestCase("10.6,.,30.02")]
         [TestCase("abc")]
         [TestCase(".")]
-        public void GetPriceDataFromDataSource_WhenInvalidDataRetrieved_ThrowsApplicationException(string dataSource)
+        public void IsStringValidNumericCsv_WhenInvalid_ThrowsApplicationException(string stringToTest)
         {
-            Assert.That(() => Extractor.GetPriceDataFromDataSource(dataSource), Throws.TypeOf<ApplicationException>());
-        }
-
-        [TestCase("abc")]
-        [TestCase(".")]
-        [TestCase("12.1,12.1,a")]
-        public void GetPriceDataFromCsvString_WhenInvalidDataRetrieved_ThrowsApplicationException(string csvString)
-        {
-            Assert.That(() => Extractor.GetPriceDataFromCsvString(csvString), Throws.TypeOf<ApplicationException>());
-        }
-
-        [Test]
-        public void GetPriceDataFromCsvString_WhenNoDataRetrieved_ThrowsApplicationException()
-        {
-            Assert.That(() => Extractor.GetPriceDataFromCsvString(""), Throws.TypeOf<ApplicationException>());
+            Assert.That(() => Extractor.IsStringValidNumericCsv(stringToTest), Throws.TypeOf<ApplicationException>());
         }
 
         [Test]

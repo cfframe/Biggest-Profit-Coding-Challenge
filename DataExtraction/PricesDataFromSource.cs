@@ -72,27 +72,17 @@ namespace DataExtraction
 
         public bool IsStringValidNumericCsv(string itemToValidate)
         {
-            // TODO: to implement number comma pattern validation
-            // Regex here seems to behave contrary to other regex conventions - doesn't accept \d or \.
-
             if (string.IsNullOrEmpty(itemToValidate) || string.IsNullOrWhiteSpace(itemToValidate))
             {
                 throw new ApplicationException("No data supplied.");
             }
 
-            // Look for unwanted characters
-            Regex invalidCharacterRegex = new Regex("[^0-9.,]");
-            if (invalidCharacterRegex.IsMatch(itemToValidate))
+            Regex r = new Regex(@"^([0-9]+.[0-9]{0,2}|[0-9]+.|.[0-9]{1,2})(,([0-9]+.[0-9]{0,2}|[0-9]+.|.[0-9]{1,2}))*$");
+            
+            if (!r.IsMatch(itemToValidate))
             {
                 throw new ApplicationException("Data is invalid.");
             }
-
-            // TODO: regex for CSV pattern.
-            //Regex r = new Regex("^([0-9]*.[0-9]{0-2},)*([0-9]*.[0-9]{0-2})$");
-            //if (!r.IsMatch(itemToValidate))
-            //{
-            //    throw new ApplicationException("Invalid data in supplied text.");
-            //}
 
             return true;
         }
