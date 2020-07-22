@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+
+[assembly: InternalsVisibleTo("DataExtraction.Tests")]
 
 namespace DataExtraction
 {
@@ -29,14 +32,7 @@ namespace DataExtraction
             return result;
         }
 
-        public string PricesStringFromSource(string dataSource)
-        {
-            string rawData = Repository.GetPricesStringFromSource(dataSource);
-
-            return rawData;
-        }
-
-        public Dictionary<int, double?> GetPriceDataFromCsvString(string dataLine)
+        internal Dictionary<int, double?> GetPriceDataFromCsvString(string dataLine)
         {
             var priceData = new Dictionary<int, double?>();
 
@@ -64,20 +60,19 @@ namespace DataExtraction
             return priceData;
         }
 
-        public bool IsDictionaryValid(Dictionary<int, double?> itemToValidate)
-        {
-
-            return false;
-        }
-
-        public bool IsStringValidNumericCsv(string itemToValidate)
+        internal bool IsStringValidNumericCsv(string itemToValidate)
         {
             if (string.IsNullOrEmpty(itemToValidate) || string.IsNullOrWhiteSpace(itemToValidate))
             {
                 throw new ApplicationException("No data supplied.");
             }
 
-            Regex r = new Regex(@"^([0-9]+.[0-9]{0,2}|[0-9]+.|.[0-9]{1,2})(,([0-9]+.[0-9]{0,2}|[0-9]+.|.[0-9]{1,2}))*$");
+            // Assumes following string formats are acceptable for interpretation as double with up to 2 dec places:
+            // [0-9]+.[0-9]{1,2} eg 1234.5, 1234.56
+            // [0-9]+. eg 1., 12.
+            // .[0-9]{1,2} eg .1, .12
+            // [0-9]+ e.g. 1, 12
+            Regex r = new Regex(@"^([0-9]+\.[0-9]{1,2}|[0-9]+\.|\.[0-9]{1,2}|[0-9]+)(,([0-9]+\.[0-9]{1,2}|[0-9]+\.|\.[0-9]{1,2}|[0-9]+))*$");
             
             if (!r.IsMatch(itemToValidate))
             {

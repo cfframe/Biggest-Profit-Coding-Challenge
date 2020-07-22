@@ -46,6 +46,8 @@ namespace DataExtraction.Tests
         [TestCase("10.1,20.2,30.02,10.1")]
         [TestCase("10.,20.2,30.02,10.1")]
         [TestCase("10.6,.2,30.02,10.1")]
+        [TestCase("10,20,30,10")]
+        [TestCase("10,2.1,302,10.2")]
         public void IsStringValidNumericCsv_WhenValid_ReturnsTrue(string stringToTest)
         {
 
@@ -55,9 +57,11 @@ namespace DataExtraction.Tests
         }
 
         [TestCase("")]
+        [TestCase(".")]
         [TestCase("10.6,.,30.02")]
         [TestCase("abc")]
-        [TestCase(".")]
+        [TestCase("10,a,30,10")]
+        [TestCase("10,1a,30,10")]
         public void IsStringValidNumericCsv_WhenInvalid_ThrowsApplicationException(string stringToTest)
         {
             Assert.That(() => Extractor.IsStringValidNumericCsv(stringToTest), Throws.TypeOf<ApplicationException>());
