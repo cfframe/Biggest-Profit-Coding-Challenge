@@ -1,6 +1,7 @@
 # Biggest Profit Coding Challenge
 
-Console application - download, build and run.
+Console application developed in Visual Studio 2019.
+To run: download, build, run 'ProfitConsoleApp' project.
 
 COPIED FROM SUPPLIED CHALLENGE SHEET (Computershare):
 
